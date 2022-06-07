@@ -1,0 +1,114 @@
+<resources>
+    <string name="app_name">Ably_demo</string>
+
+
+<!-- subscriber   -->
+<!--    <string name="ably_asset_tracking">Ably Asset Tracking</string>-->
+    <string name="start_button_ready">Start</string>
+    <string name="start_button_working">Stop</string>
+    <string name="trackable_id">Trackable ID</string>
+    <string name="animation">Animation</string>
+<!--    <string name="asset_status_label">The asset is</string>-->
+    <string name="asset_status_offline">OFFLINE</string>
+    <string name="asset_status_online">ONLINE</string>
+    <string name="asset_status_failed">FAILED</string>
+    <string name="resolution_accuracy">Accuracy</string>
+    <string name="resolution_minimum_displacement">Min displacement</string>
+    <string name="resolution_minimum_displacement_value">%.1fm</string>
+    <string name="resolution_desired_interval">Desired interval</string>
+    <string name="resolution_desired_interval_value">%dms</string>
+    <string name="error_starting_subscriber_failed">Starting subscriber error</string>
+    <string name="error_stopping_subscriber_failed">Stopping subscriber error</string>
+<!--    <string name="error_no_trackable_id">Insert trackable ID</string>-->
+    <string name="error_changing_resolution_failed">Changing resolution error</string>
+    <string name="subscriber_resolution_title">Subscriber\'s requested resolution</string>
+    <string name="publisher_resolution_title">Publisher\'s calculated resolution</string>
+    <string name="animation_options_dialog_title">Animation Options</string>
+    <string name="dialog_ok_button">OK</string>
+    <string name="animation_option_show_raw_marker_title">Raw marker</string>
+    <string name="animation_option_show_raw_accuracy_title">Raw accuracy</string>
+    <string name="animation_option_show_enhanced_marker_title">Enhanced marker</string>
+    <string name="animation_option_show_enhanced_accuracy_title">Enhanced accuracy</string>
+    <string name="animation_option_animate_camera_movement_title">Camera animation</string>
+
+
+
+<!--     publisher    -->
+    <string name="navigation_button_ready">Start trip</string>
+    <string name="navigation_button_working">Stop trip</string>
+    <string name="stop_tracking_button">Stop tracking</string>
+    <string name="add_trackable_button">Add</string>
+    <string name="ably_asset_tracking">Ably Asset Tracking</string>
+    <string name="asset_status_label">Asset status:</string>
+    <string name="trackable_details">Trackable details</string>
+    <string name="add_trackable">Add trackable</string>
+    <string name="location_source_label">Location Source:</string>
+    <string name="publisher_service_label">Publisher Service:</string>
+    <string name="current_location_and_bearing">Current location and bearing</string>
+    <string name="latitude_label">Lat:</string>
+    <string name="longitude_label">Long:</string>
+    <string name="bearing_label">Bearing:</string>
+    <string name="tracking_id">Trackable ID:</string>
+    <string name="offline">OFFLINE</string>
+    <string name="online">ONLINE</string>
+    <string name="failed">FAILED</string>
+    <string name="stop_tracking_dialog_title">Stop tracking</string>
+    <string name="stop_tracking_dialog_message">Are you sure that you want to remove this trackable?</string>
+    <string name="dialog_positive_button">OK</string>
+    <string name="dialog_negative_button">Cancel</string>
+    <string name="trackable_list">Trackable List</string>
+    <string name="resolution_section_label">Resolution</string>
+    <string name="accuracy_label">Accuracy</string>
+    <string name="desired_interval_label">Desired Interval [ms]</string>
+    <string name="minimum_displacement_label">Minimum Displacement [m]</string>
+    <string name="trackable_section_label">Trackable</string>
+    <string name="show_map_button">Show map</string>
+    <string name="destination">Destination:</string>
+
+    <string name="preferences_general_category_title">Navigation Settings</string>
+    <string name="preferences_location_source_label">Location Source</string>
+    <string name="preferences_update_simulation_channel_name_label">Simulation Channel Name</string>
+    <string name="preferences_update_simulation_channel_name_message">Set Simulation Channel Name</string>
+    <string name="default_simulation_channel">simulation_test</string>
+    <string name="preferences_s3_file_label">S3 File</string>
+    <string name="preferences_routing_profile_label">Routing profile</string>
+    <string name="preferences_resolution_category_title">Default resolution</string>
+    <string name="preferences_constant_resolution_category_title">Constant location engine resolution</string>
+    <string name="preferences_resolution_accuracy_label">Accuracy</string>
+    <string name="preferences_resolution_desired_interval_label">Desired interval</string>
+    <string name="preferences_update_resolution_desired_interval_message">Desired Interval [ms]</string>
+    <string name="preferences_update_resolution_desired_interval_title">Set Desired Interval</string>
+    <string name="preferences_resolution_minimum_displacement_label">Minimum displacement</string>
+    <string name="preferences_update_resolution_minimum_displacement_message">Minimum Displacement [m]</string>
+    <string name="preferences_update_resolution_minimum_displacement_title">Set Minimum Displacement</string>
+    <string name="preferences_debug_category_title">Debug</string>
+    <string name="preferences_send_raw_locations_label">Send raw location updates</string>
+    <string name="preferences_send_resolution_label">Send resolution</string>
+    <string name="preferences_enable_predictions_label">Enable predictions</string>
+    <string name="preferences_enable_constant_resolution_label">Use constant location engine resolution</string>
+    <string name="trackable_list_empty_state_header">No assets</string>
+    <string name="trackable_list_empty_state_message">Trackable assets will be listed here when added</string>
+    <string name="service_not_started_dialog_title">Publisher service not started</string>
+    <string name="service_not_started_dialog_message">The publisher service has to be started to start adding trackables. Please use the switch at the bottom of the screen to turn it on.</string>
+    <string name="cannot_stop_service_dialog_title">Publisher still has added trackables</string>
+    <string name="cannot_stop_service_dialog_message">The publisher has added trackables. Remove them before stopping the publisher service.</string>
+
+    <string name="error_s3_not_initialized_history_data_upload_failed">S3 not initialized - cannot upload history data</string>
+    <string name="error_s3_not_initialized_history_data_download_failed">S3 not initialized - cannot download history data</string>
+    <string name="error_s3_not_initialized_history_data_fetch_failed">S3 not initialized - cannot fetch files</string>
+    <string name="error_no_trackable_id">Insert tracking ID</string>
+    <string name="error_publisher_service_not_started">Publisher service not started</string>
+    <string name="error_trackable_adding_failed">Error when adding the trackable</string>
+    <string name="error_trackable_removal_failed">Error when removing the trackable</string>
+    <string name="error_stopping_publisher_failed">Stopping publisher error</string>
+    <string name="info_permission_granted">Permission granted</string>
+
+    <string name="location_source_phone">Phone</string>
+    <string name="location_source_ably_channel">Ably Channel</string>
+    <string name="location_source_s3_file">S3 File</string>
+
+    <string name="routing_profile_driving">Driving</string>
+    <string name="routing_profile_cycling">Cycling</string>
+    <string name="routing_profile_walking">Walking</string>
+    <string name="routing_profile_driving_traffic">Driving with traffic data</string>
+</resources>

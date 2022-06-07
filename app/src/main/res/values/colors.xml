@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="green">#08FF13</color>
+    <color name="light_red">#EB5757</color>
+    <color name="orange">#FF552A</color>
+    <color name="dark_grey">#76767C</color>
+    <color name="grey">#A8A8A8</color>
+    <color name="mid_grey">#D9D9DA</color>
+    <color name="light_grey">#F5F5F6</color>
+    <color name="asset_status_online">@color/green</color>
+    <color name="asset_status_failed">@color/light_red</color>
+    <color name="asset_status_offline">@color/grey</color>
+    <color name="header_background">#03020D</color>
+    <color name="location_source_background">@color/light_grey</color>
+    <color name="button_inactive">@color/grey</color>
+    <color name="button_active">@color/orange</color>
+
+    <color name="button_working">@color/light_red</color>
+    <color name="asset_information_background">@color/light_grey</color>
+    <color name="asset_information_label">@color/black</color>
+    <color name="asset_information_divider">@color/grey</color>
+    <color name="header_title">@color/orange</color>
+    <color name="asset_online">@color/green</color>
+    <color name="asset_offline">@color/grey</color>
+    <color name="asset_failed">@color/light_red</color>
+
+</resources>
