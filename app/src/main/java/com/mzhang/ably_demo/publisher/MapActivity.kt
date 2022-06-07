@@ -2,6 +2,8 @@ package com.mzhang.ably_demo.publisher
 
 import android.location.Location
 import android.os.Bundle
+//import com.ably.tracking.example.publisher.PublisherService
+//import com.ably.tracking.example.publisher.PublisherServiceActivity
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapboxMap

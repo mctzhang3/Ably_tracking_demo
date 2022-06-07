@@ -10,7 +10,7 @@ const val NOTIFICATION_CHANNEL_ID = "PublisherServiceChannelId"
 class PublishingExampleApplication : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
-//        S3Helper.init(this)
+        S3Helper.init(this)
         createNotificationChannel()
     }
 

@@ -10,6 +10,10 @@ import com.ably.tracking.Location
 import com.ably.tracking.TrackableState
 import com.ably.tracking.publisher.Trackable
 import com.mzhang.ably_demo.R
+import com.mzhang.ably_demo.publisher.AppPreferences
+import com.mzhang.ably_demo.publisher.MapActivity
+import com.mzhang.ably_demo.publisher.hideText
+import com.mzhang.ably_demo.publisher.showText
 import kotlinx.android.synthetic.main.activity_trackable_details.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

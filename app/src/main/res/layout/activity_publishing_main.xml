@@ -1,46 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".publisher.MainActivity">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
 
-    <View
-        android:id="@+id/publisherServiceBackground"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="@color/location_source_background"
-        app:layout_constraintBottom_toBottomOf="parent" />
+  <View
+    android:id="@+id/headerBackground"
+    android:layout_width="match_parent"
+    android:layout_height="57dp"
+    android:background="@color/header_background"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <androidx.appcompat.widget.AppCompatImageView
+    android:layout_width="wrap_content"
+    android:layout_height="20dp"
+    android:layout_marginStart="@dimen/medium_margin"
+    android:src="@drawable/header_logo_with_title"
+    app:layout_constraintBottom_toBottomOf="@id/headerBackground"
+    app:layout_constraintStart_toStartOf="@id/headerBackground"
+    app:layout_constraintTop_toTopOf="@id/headerBackground" />
+
+  <androidx.appcompat.widget.AppCompatImageView
+    android:id="@+id/settingsImageView"
+    android:layout_width="19dp"
+    android:layout_height="19dp"
+    android:layout_marginEnd="@dimen/medium_margin"
+    android:src="@drawable/ic_settings"
+    app:layout_constraintBottom_toBottomOf="@id/headerBackground"
+    app:layout_constraintEnd_toEndOf="@id/headerBackground"
+    app:layout_constraintTop_toTopOf="@id/headerBackground" />
+
+  <View
+    android:id="@+id/locationSourceBackground"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@color/location_source_background"
+    app:layout_constraintTop_toBottomOf="@id/headerBackground" />
+
+  <TextView
+    android:id="@+id/locationSourceLabelTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/medium_margin"
+    android:text="@string/location_source_label"
+    android:textColor="@color/black"
+    android:textSize="14sp"
+    app:layout_constraintBottom_toBottomOf="@id/locationSourceBackground"
+    app:layout_constraintStart_toStartOf="@id/locationSourceBackground"
+    app:layout_constraintTop_toTopOf="@id/locationSourceBackground" />
+
+  <TextView
+    android:id="@+id/locationSourceMethodTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/medium_margin"
+    android:textColor="@color/black"
+    android:textSize="14sp"
+    android:textStyle="bold"
+    app:layout_constraintBottom_toBottomOf="@id/locationSourceLabelTextView"
+    app:layout_constraintStart_toEndOf="@id/locationSourceLabelTextView"
+    app:layout_constraintTop_toTopOf="@id/locationSourceLabelTextView"
+    tools:text="Phone" />
+
+  <TextView
+    android:id="@+id/trackableListLabelTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/medium_margin"
+    android:layout_marginTop="@dimen/big_margin"
+    android:text="@string/trackable_list"
+    android:textColor="@color/black"
+    android:textSize="32sp"
+    android:textStyle="bold"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/locationSourceBackground" />
+
+  <LinearLayout
+    android:id="@+id/emptyStateContainer"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <TextView
-        android:id="@+id/publisherServiceSwitchLabelTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/medium_margin"
-        android:text="@string/publisher_service_label"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@id/publisherServiceBackground"
-        app:layout_constraintStart_toStartOf="@id/publisherServiceBackground"
-        app:layout_constraintTop_toTopOf="@id/publisherServiceBackground" />
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/trackable_list_empty_state_header"
+      android:textColor="@color/grey"
+      android:textSize="24sp" />
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/publisherServiceSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/medium_margin"
-        app:layout_constraintBottom_toBottomOf="@id/publisherServiceSwitchLabelTextView"
-        app:layout_constraintStart_toEndOf="@id/publisherServiceSwitchLabelTextView"
-        app:layout_constraintTop_toTopOf="@id/publisherServiceSwitchLabelTextView" />
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="6dp"
+      android:gravity="center"
+      android:text="@string/trackable_list_empty_state_message"
+      android:textColor="@color/grey"
+      android:textSize="14sp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addTrackableFab"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_margin="@dimen/medium_margin"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_add" />
+  </LinearLayout>
+
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/trackablesRecyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_marginTop="16dp"
+    android:visibility="gone"
+    app:layout_constraintBottom_toTopOf="@id/publisherServiceBackground"
+    app:layout_constraintTop_toBottomOf="@id/trackableListLabelTextView" />
+
+  <View
+    android:id="@+id/publisherServiceBackground"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="@color/location_source_background"
+    app:layout_constraintBottom_toBottomOf="parent" />
+
+  <TextView
+    android:id="@+id/publisherServiceSwitchLabelTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/medium_margin"
+    android:text="@string/publisher_service_label"
+    android:textColor="@color/black"
+    android:textSize="16sp"
+    app:layout_constraintBottom_toBottomOf="@id/publisherServiceBackground"
+    app:layout_constraintStart_toStartOf="@id/publisherServiceBackground"
+    app:layout_constraintTop_toTopOf="@id/publisherServiceBackground" />
+
+  <androidx.appcompat.widget.SwitchCompat
+    android:id="@+id/publisherServiceSwitch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/medium_margin"
+    app:layout_constraintBottom_toBottomOf="@id/publisherServiceSwitchLabelTextView"
+    app:layout_constraintStart_toEndOf="@id/publisherServiceSwitchLabelTextView"
+    app:layout_constraintTop_toTopOf="@id/publisherServiceSwitchLabelTextView" />
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/addTrackableFab"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:layout_margin="@dimen/medium_margin"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:srcCompat="@drawable/ic_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

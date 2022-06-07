@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
@@ -15,11 +14,7 @@ abstract class PublisherServiceActivity : AppCompatActivity() {
     protected var publisherService: PublisherService? = null
     private val publisherServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, serviceBinder: IBinder) {
-            Log.d("PublisherServiceActivit", " onServiceConnected outside")
-
             (serviceBinder as PublisherService.Binder).getService().let { service ->
-                Log.d("PublisherServiceActivit", " onServiceConnected inside")
-
                 publisherService = service
                 onPublisherServiceConnected(service)
             }

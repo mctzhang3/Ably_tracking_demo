@@ -51,6 +51,8 @@ dependencies {
 
     implementation "io.ably:ably-android:1.2.11"
     implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'com.amplifyframework:aws-storage-s3:1.4.1'
+    implementation 'com.amplifyframework:aws-auth-cognito:1.4.1'
     implementation 'pub.devrel:easypermissions:3.0.0'
     // This version needs to be compatible with the "com.mapbox.navigation:core" dependency version from publishing-sdk.
     implementation 'com.mapbox.maps:android:10.3.0'
@@ -60,6 +62,30 @@ dependencies {
 
 
     implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    // =======
+    // The MapBox Navigation SDK for Android.
+    // We're not using the pre-built UI components, so just need the core dependency.
+    // https://docs.mapbox.com/android/navigation/overview/
+    implementation('com.mapbox.navigation:core:2.3.0') {
+        // We provide a custom trip notification so we exclude the default one.
+        // https://docs.mapbox.com/android/navigation/guides/modularization/#tripnotification
+        exclude group: "com.mapbox.navigation", module: "notification"
+    }
+    // The special asset tracking profile for the Mapbox Navigation.
+    implementation("com.mapbox.navigator:mapbox-navigation-native:ak-2.3-tracking-profile-4-SNAPSHOT") {
+        force = true
+    }
+
+    // Dependencies needed for replacing Mapbox modules.
+    // https://docs.mapbox.com/android/navigation/guides/modularization/#replacing-a-module
+    compileOnly("com.mapbox.base:annotations:0.5.0")
+//    kapt("com.mapbox.base:annotations-processor:0.4.0")
+
+    // Only the Core SDK portion of the MapBox Maps SDK for Android.
+    // https://docs.mapbox.com/android/maps/overview/
+    // https://docs.mapbox.com/android/core/overview/
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-core:5.0.0'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

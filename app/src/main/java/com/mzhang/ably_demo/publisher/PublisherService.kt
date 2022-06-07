@@ -5,7 +5,6 @@ import android.app.Notification
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
-import android.util.Log
 import androidx.annotation.RequiresPermission
 import androidx.core.app.NotificationCompat
 import com.ably.tracking.Resolution
@@ -19,16 +18,17 @@ import com.ably.tracking.publisher.LocationSource
 import com.ably.tracking.publisher.MapConfiguration
 import com.ably.tracking.publisher.Publisher
 import com.ably.tracking.publisher.PublisherNotificationProvider
-import com.mapbox.common.TileStoreOptions.MAPBOX_ACCESS_TOKEN
-import com.mzhang.ably_demo.BuildConfig
-import com.mzhang.ably_demo.R
+import com.mzhang.ably_demo.publisher.AppPreferences
+import com.mzhang.ably_demo.publisher.LocationSourceType
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-//import timber.log.Timber
+import timber.log.Timber
+import com.mzhang.ably_demo.BuildConfig
+import com.mzhang.ably_demo.R
 
 // The public token for the Mapbox SDK. For more details see the README.
 private const val MAPBOX_ACCESS_TOKEN = BuildConfig.MAPBOX_ACCESS_TOKEN
@@ -62,7 +62,6 @@ class PublisherService : Service() {
 
         startForeground(NOTIFICATION_ID, notification)
 
-        Log.d("PublisherService", " after startForeground")
         return START_NOT_STICKY
     }
 
@@ -105,17 +104,17 @@ class PublisherService : Service() {
             .resolutionPolicy(DefaultResolutionPolicyFactory(createDefaultResolution(), this))
             .androidContext(this)
             .profile(appPreferences.getRoutingProfile().toAssetTracking())
-//            .logHandler(object : LogHandler {
-//                override fun logMessage(level: LogLevel, message: String, throwable: Throwable?) {
-//                    when (level) {
-//                        LogLevel.VERBOSE -> Timber.v(throwable, message)
-//                        LogLevel.INFO -> Timber.i(throwable, message)
-//                        LogLevel.DEBUG -> Timber.d(throwable, message)
-//                        LogLevel.WARN -> Timber.w(throwable, message)
-//                        LogLevel.ERROR -> Timber.e(throwable, message)
-//                    }
-//                }
-//            })
+            .logHandler(object : LogHandler {
+                override fun logMessage(level: LogLevel, message: String, throwable: Throwable?) {
+                    when (level) {
+                        LogLevel.VERBOSE -> Timber.v(throwable, message)
+                        LogLevel.INFO -> Timber.i(throwable, message)
+                        LogLevel.DEBUG -> Timber.d(throwable, message)
+                        LogLevel.WARN -> Timber.w(throwable, message)
+                        LogLevel.ERROR -> Timber.e(throwable, message)
+                    }
+                }
+            })
             .backgroundTrackingNotificationProvider(
                 object : PublisherNotificationProvider {
                     override fun getNotification(): Notification = notification
@@ -136,12 +135,12 @@ class PublisherService : Service() {
         )
 
     private fun uploadLocationHistoryData(historyData: LocationHistoryData) {
-//        if (appPreferences.getLocationSource() == LocationSourceType.PHONE) {
-//            S3Helper.uploadHistoryData(
-//                this,
-//                historyData
-//            ) { showShortToast(R.string.error_s3_not_initialized_history_data_upload_failed) }
-//        }
+        if (appPreferences.getLocationSource() == LocationSourceType.PHONE) {
+            S3Helper.uploadHistoryData(
+                this,
+                historyData
+            ) { showShortToast(R.string.error_s3_not_initialized_history_data_upload_failed) }
+        }
     }
 
     private fun createConstantLocationEngineResolution(): Resolution? =

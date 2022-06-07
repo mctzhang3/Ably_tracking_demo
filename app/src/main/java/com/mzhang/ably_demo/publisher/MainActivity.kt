@@ -1,35 +1,80 @@
 package com.mzhang.ably_demo.publisher
 
-import android.Manifest
 import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.RequiresPermission
-import androidx.annotation.StringRes
-import com.ably.tracking.Accuracy
-import com.ably.tracking.Resolution
-import com.ably.tracking.publisher.*
+import android.view.View
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.mzhang.ably_demo.R
+import com.mzhang.ably_demo.publisher.AddTrackableActivity
+import com.mzhang.ably_demo.publisher.AppPreferences
+import com.mzhang.ably_demo.publisher.PermissionsHelper
+import com.mzhang.ably_demo.publisher.showLongToast
 import kotlinx.android.synthetic.main.activity_publishing_main.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 class MainActivity : PublisherServiceActivity() {
     private lateinit var appPreferences: AppPreferences
+    private val trackablesAdapter = TrackablesAdapter()
     private var trackablesUpdateJob: Job? = null
 
     // SupervisorJob() is used to keep the scope working after any of its children fail
     private val scope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
-    @RequiresPermission(anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.d("Hello via Timber")
         setContentView(R.layout.activity_publishing_main)
         appPreferences = AppPreferences.getInstance(this)
+        updateLocationSourceMethodInfo()
 
         PermissionsHelper.requestLocationPermission(this)
+
+        settingsImageView.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
+        }
+
+        addTrackableFab.setOnClickListener { onAddTrackableClick() }
         publisherServiceSwitch.setOnClickListener { onServiceSwitchClick(publisherServiceSwitch.isChecked) }
-        addTrackableFab.setOnClickListener {         addTrackableClicked() }
+
+        trackablesRecyclerView.adapter = trackablesAdapter
+        trackablesRecyclerView.layoutManager = LinearLayoutManager(this)
+        trackablesRecyclerView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
+        trackablesAdapter.onItemClickedCallback = { onTrackableClicked(it.id) }
+    }
+
+    override fun onPublisherServiceConnected(publisherService: PublisherService) {
+        indicatePublisherServiceIsOn()
+        publisherService.publisher?.let { publisher ->
+            trackablesUpdateJob = publisher.trackables
+                .onEach {
+                    trackablesAdapter.trackables = it.toList()
+                    if (it.isEmpty() && publisherService.publisher != null) {
+                        hideTrackablesList()
+                        try {
+                            publisherService.publisher?.stop()
+                            publisherService.publisher = null
+                        } catch (e: Exception) {
+                            showLongToast(R.string.error_stopping_publisher_failed)
+                        }
+                    } else {
+                        showTrackablesList()
+                    }
+                }
+                .launchIn(scope)
+        }
+    }
+
+    override fun onPublisherServiceDisconnected() {
+        indicatePublisherServiceIsOff()
+        trackablesUpdateJob?.cancel()
     }
 
     override fun onStart() {
@@ -37,8 +82,45 @@ class MainActivity : PublisherServiceActivity() {
         updateLocationSourceMethodInfo()
     }
 
+    private fun onTrackableClicked(trackableId: String) {
+        startActivity(
+            Intent(this, TrackableDetailsActivity::class.java).apply {
+                putExtra(TRACKABLE_ID_EXTRA, trackableId)
+            }
+        )
+    }
+
+    private fun onServiceSwitchClick(isSwitchingOn: Boolean) {
+        if (isSwitchingOn) {
+            startAndBindPublisherService()
+        } else {
+            if (trackablesAdapter.trackables.isEmpty()) {
+                stopPublisherService()
+            } else {
+                showCannotStopServiceDialog()
+                indicatePublisherServiceIsOn()
+            }
+        }
+    }
+
+    private fun onAddTrackableClick() {
+        if (isPublisherServiceStarted()) {
+            showAddTrackableScreen()
+        } else {
+            showServiceNotStartedDialog()
+        }
+    }
+
     private fun updateLocationSourceMethodInfo() {
-//        locationSourceMethodTextView.text = getString(appPreferences.getLocationSource().displayNameResourceId)
+        locationSourceMethodTextView.text = getString(appPreferences.getLocationSource().displayNameResourceId)
+    }
+
+    private fun showAddTrackableScreen() {
+        if (PermissionsHelper.hasFineOrCoarseLocationPermissionGranted(this)) {
+            startActivity(Intent(this, AddTrackableActivity::class.java))
+        } else {
+            PermissionsHelper.requestLocationPermission(this)
+        }
     }
 
     override fun onRequestPermissionsResult(
@@ -55,33 +137,14 @@ class MainActivity : PublisherServiceActivity() {
         )
     }
 
-    override fun onPublisherServiceConnected(publisherService: PublisherService) {
-        indicatePublisherServiceIsOn()
-        publisherService.publisher?.let { publisher ->
-
-            trackablesUpdateJob = publisher.trackables
-                .onEach {
-//                    trackablesAdapter.trackables = it.toList()
-                    if (it.isEmpty() && publisherService.publisher != null) {
-//                        hideTrackablesList()
-                        try {
-                            publisherService.publisher?.stop()
-                            publisherService.publisher = null
-                        } catch (e: Exception) {
-                            showLongToast(R.string.error_stopping_publisher_failed)
-                        }
-                    } else {
-//                        addTrackableClicked()
-//                        showTrackablesList()
-                    }
-                }
-                .launchIn(scope)
-        }
+    private fun showTrackablesList() {
+        trackablesRecyclerView.visibility = View.VISIBLE
+        emptyStateContainer.visibility = View.GONE
     }
 
-    override fun onPublisherServiceDisconnected() {
-        indicatePublisherServiceIsOff()
-        trackablesUpdateJob?.cancel()
+    private fun hideTrackablesList() {
+        trackablesRecyclerView.visibility = View.GONE
+        emptyStateContainer.visibility = View.VISIBLE
     }
 
     private fun indicatePublisherServiceIsOn() {
@@ -92,87 +155,19 @@ class MainActivity : PublisherServiceActivity() {
         publisherServiceSwitch.isChecked = false
     }
 
-    private fun onServiceSwitchClick(isSwitchingOn: Boolean) {
-        if (isSwitchingOn) {
-            startAndBindPublisherService()
-        } else {
-            stopPublisherService()
-//            if (trackablesAdapter.trackables.isEmpty()) {
-//                stopPublisherService()
-//            } else {
-//                showCannotStopServiceDialog()
-//                indicatePublisherServiceIsOn()
-//            }
-        }
+    private fun showServiceNotStartedDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.service_not_started_dialog_title)
+            .setMessage(R.string.service_not_started_dialog_message)
+            .setPositiveButton(R.string.dialog_positive_button, null)
+            .show()
     }
 
-    @RequiresPermission(anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
-    private fun addTrackableClicked() {
-        getTrackableId().let { trackableId ->
-            if (!PermissionsHelper.hasFineOrCoarseLocationPermissionGranted(this)) {
-                PermissionsHelper.requestLocationPermission(this)
-                return
-            }
-            if (trackableId.isNotEmpty()) {
-//                showLoading()
-                if (isPublisherServiceStarted()) {
-                    publisherService?.let { publisherService ->
-                        scope.launch(CoroutineExceptionHandler { _, _ -> onAddTrackableFailed() }) {
-                            if (!publisherService.isPublisherStarted) {
-                                startPublisher(publisherService)
-                            }
-                            publisherService.publisher!!.track(createTrackable(trackableId))
-                            showTrackableDetailsScreen(trackableId)
-                            finish()
-                        }
-                    }
-                } else {
-                    onAddTrackableFailed(R.string.error_publisher_service_not_started)
-                }
-            } else {
-                showLongToast(R.string.error_no_trackable_id)
-            }
-        }
+    private fun showCannotStopServiceDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.cannot_stop_service_dialog_title)
+            .setMessage(R.string.cannot_stop_service_dialog_message)
+            .setPositiveButton(R.string.dialog_positive_button, null)
+            .show()
     }
-
-    private fun showTrackableDetailsScreen(trackableId: String) {
-        startActivity(
-            Intent(this, TrackableDetailsActivity::class.java).apply {
-                putExtra(TRACKABLE_ID_EXTRA, trackableId)
-            }
-        )
-    }
-
-    private fun createTrackable(trackableId: String): Trackable =
-        Trackable(
-            trackableId,
-            constraints = DefaultResolutionConstraints(
-                DefaultResolutionSet(createResolution()),
-                DefaultProximity(spatial = 1.0),
-                batteryLevelThreshold = 10.0f,
-                lowBatteryMultiplier = 2.0f
-            )
-        )
-
-    private fun createResolution(): Resolution {
-        return Resolution(
-            Accuracy.BALANCED,
-            1000,
-            1.0
-        )
-    }
-
-    @RequiresPermission(anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
-    private suspend fun startPublisher(publisherService: PublisherService) {
-        publisherService.startPublisher()
-    }
-
-    private fun getTrackableId(): String = "trackableId1"
-
-    private fun onAddTrackableFailed(@StringRes messageResourceId: Int = R.string.error_trackable_adding_failed) {
-        showLongToast(messageResourceId)
-//        hideLoading()
-    }
-
-
 }

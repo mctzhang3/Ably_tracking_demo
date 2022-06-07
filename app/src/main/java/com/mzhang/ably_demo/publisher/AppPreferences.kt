@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.preference.PreferenceManager
 import com.ably.tracking.Accuracy
 import com.ably.tracking.Resolution
+//import com.ably.tracking.example.publisher.RoutingProfileType
 import com.mzhang.ably_demo.R
 
 class AppPreferences private constructor(context: Context) {
