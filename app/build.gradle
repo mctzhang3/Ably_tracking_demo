@@ -8,17 +8,22 @@ plugins {
 android {
     compileSdk 32
 
+    Properties properties = new Properties()
+    if (rootProject.file("local.properties").exists()) {
+        properties.load(rootProject.file("local.properties").newDataInputStream())
+    }
+
     defaultConfig {
         applicationId "com.mzhang.ably_demo"
         minSdk 21
         targetSdk 32
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "ABLY_API_KEY", "\"${property('ABLY_API_KEY')}\""
-        buildConfigField "String", "MAPBOX_ACCESS_TOKEN", "\"${property('MAPBOX_ACCESS_TOKEN')}\""
-        resValue "string", "mapbox_access_token", property('MAPBOX_ACCESS_TOKEN')
+        buildConfigField "String", "ABLY_API_KEY", "\"${properties.getProperty('ABLY_API_KEY')}\""
+        buildConfigField "String", "MAPBOX_ACCESS_TOKEN", "\"${properties.getProperty('MAPBOX_ACCESS_TOKEN')}\""
+        resValue "string", "mapbox_access_token", properties.getProperty('MAPBOX_ACCESS_TOKEN')
 
-        resValue 'string', 'google_maps_api_key', "${property('GOOGLE_MAPS_API_KEY')}"
+        resValue 'string', 'google_maps_api_key', "${properties.getProperty('GOOGLE_MAPS_API_KEY')}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

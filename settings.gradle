@@ -1,37 +1,39 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
-        google()
-        mavenCentral()
+//        google()
+//        mavenCentral()
     }
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        maven {
-            url 'https://api.mapbox.com/downloads/v2/releases/maven'
-            authentication {
-                basic(BasicAuthentication)
-            }
-            credentials {
-                username = 'mapbox'
-                password = 'sk.eyJ1IjoibWN0emhhbmciLCJhIjoiY2wzeDJ2bHpiMDg2NTNqbXkwc2tqMGVuOSJ9.eEz-ZTpGTAaCkVlJzybW9A'
-            }
-        }
-        // Mapbox Snapshot repository required to get the new asset tracking navigation profile.
-        maven {
-            url 'https://api.mapbox.com/downloads/v2/snapshots/maven'
-            authentication {
-                basic(BasicAuthentication)
-            }
-            credentials {
-                username = 'mapbox'
-                password = 'sk.eyJ1IjoibWN0emhhbmciLCJhIjoiY2wzeDJ2bHpiMDg2NTNqbXkwc2tqMGVuOSJ9.eEz-ZTpGTAaCkVlJzybW9A'
-            }
-        }
-    }
-}
+//dependencyResolutionManagement {
+//    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+//
+//    repositories {
+//        google()
+//        mavenCentral()
+//        maven {
+//            url 'https://api.mapbox.com/downloads/v2/releases/maven'
+//            authentication {
+//                basic(BasicAuthentication)
+//            }
+//            credentials {
+//                username = 'mapbox'
+//                password = 'sk.eyJ1IjoibWN0emhhbmciLCJhIjoiY2wzeDJ2bHpiMDg2NTNqbXkwc2tqMGVuOSJ9.eEz-ZTpGTAaCkVlJzybW9A'
+//            }
+//        }
+//        // Mapbox Snapshot repository required to get the new asset tracking navigation profile.
+//        maven {
+//            url 'https://api.mapbox.com/downloads/v2/snapshots/maven'
+//            authentication {
+//                basic(BasicAuthentication)
+//            }
+//            credentials {
+//                username = 'mapbox'
+//                password = 'sk.eyJ1IjoibWN0emhhbmciLCJhIjoiY2wzeDJ2bHpiMDg2NTNqbXkwc2tqMGVuOSJ9.eEz-ZTpGTAaCkVlJzybW9A'
+//            }
+//        }
+//    }
+//}
+
 rootProject.name = "Ably_demo"
 include ':app'
